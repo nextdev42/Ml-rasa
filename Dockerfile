@@ -1,4 +1,5 @@
-FROM rasa/rasa:latest-spacy-en
+#FROM rasa/rasa:latest-spacy-en
+FROM rasa/rasa:3.5.11
 
 # Copy model (this is required if you want to serve a trained model)
 COPY ./models /app/models
