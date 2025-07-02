@@ -8,7 +8,7 @@ COPY ./data /app/data
 COPY config.yml /app/
 COPY domain.yml /app/
 COPY credentials.yml /app/
-COPY endpoints.yml /app/
+
 
 # Set working directory
 WORKDIR /app
