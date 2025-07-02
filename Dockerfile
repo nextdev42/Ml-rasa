@@ -1,30 +1,17 @@
-FROM python:3.10-slim
+FROM rasa/rasa:latest-spacy-en
 
-ENV DEBIAN_FRONTEND=noninteractive
+# Copy model (this is required if you want to serve a trained model)
+COPY ./models /app/models
 
+# Copy everything else needed for Rasa
+COPY ./data /app/data
+COPY config.yml /app/
+COPY domain.yml /app/
+COPY credentials.yml /app/
+COPY endpoints.yml /app/
+
+# Set working directory
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y \
-    gcc \
-    build-essential \
-    libffi-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    libjpeg-dev \
-    zlib1g-dev \
-    git \
-    curl \
-    libyaml-dev \
-    python3-dev \
- && rm -rf /var/lib/apt/lists/*
-
-COPY . .
-
-RUN pip install --upgrade pip setuptools wheel
-RUN pip install --only-binary :all: pyyaml==5.4.1
-RUN pip install -r requirements.txt
-RUN python -m spacy download en_core_web_md
-
-RUN rasa train
-
-CMD ["rasa", "run", "--enable-api", "--cors", "*", "--port", "8000"]
+# Start Rasa server with your trained model
+CMD ["run", "--enable-api", "--debug", "--model", "models/latest.tar.gz"]
