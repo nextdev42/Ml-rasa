@@ -1,14 +1,13 @@
 version: '3.9'
+
 services:
   rasa:
     image: rasa/rasa:latest-spacy-en
     ports:
       - "5005:5005"
     volumes:
-      - ./rasa-app-data/data:/app/data
-      - ./rasa-app-data/logs:/app/logs
-      - ./rasa-app-data/projects:/app/projects
-    command:
-      - run
-      - --enable-api
-      - --debug
+      - /workspace/ml-rasa/data:/app/data
+      - /workspace/ml-rasa/models:/app/models
+      - /workspace/ml-rasa/config.yml:/app/config.yml
+      - /workspace/ml-rasa/domain.yml:/app/domain.yml
+    command: ["run", "--enable-api", "--debug"]
