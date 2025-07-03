@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.db
+logs/
+*.log
+.rasa
+.rasa_cache
+.cache
+
