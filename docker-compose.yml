@@ -10,5 +10,4 @@ services:
       - /workspace/ml-rasa/models:/app/models
       - /workspace/ml-rasa/config.yml:/app/config.yml
       - /workspace/ml-rasa/domain.yml:/app/domain.yml
-    user: "${UID:-1000}:${GID:-1000}"  # 🧑 Ensures files are not owned by root
     command: ["run", "--enable-api", "--debug"]
