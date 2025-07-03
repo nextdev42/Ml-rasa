@@ -6,6 +6,7 @@ COPY config.yml /app/config.yml
 COPY domain.yml /app/domain.yml
 COPY credentials.yml /app/credentials.yml
 COPY endpoints.yml /app/endpoints.yml
+COPY .gitignore /app/.gitignore 
 
 WORKDIR /app
 
