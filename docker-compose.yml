@@ -3,6 +3,7 @@ version: '3.9'
 services:
   rasa:
     image: rasa/rasa:latest-spacy-en
+    user: root  # ✅ allows chown inside the container
     ports:
       - "5005:5005"
     volumes:
