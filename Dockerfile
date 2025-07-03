@@ -1,18 +1,12 @@
-#FROM rasa/rasa:latest-spacy-en
-FROM rasa/rasa:3.5.11
+FROM rasa/rasa:latest-spacy-en
 
-# Copy model (this is required if you want to serve a trained model)
-COPY ./models /app/models
-
-# Copy everything else needed for Rasa
 COPY ./data /app/data
-COPY config.yml /app/
-COPY domain.yml /app/
-COPY credentials.yml /app/
+COPY ./models /app/models
+COPY config.yml /app/config.yml
+COPY domain.yml /app/domain.yml
+COPY credentials.yml /app/credentials.yml
+COPY endpoints.yml /app/endpoints.yml
 
-
-# Set working directory
 WORKDIR /app
 
-# Start Rasa server with your trained model
-CMD ["run", "--enable-api", "--debug", "--model", "models/latest.tar.gz"]
+CMD ["run", "--enable-api", "--debug"]
