@@ -2,13 +2,7 @@ version: '3.9'
 
 services:
   rasa:
-    image: rasa/rasa:latest-spacy-en
-    user: root  # ✅ allows chown inside the container
+    build: .
     ports:
       - "5005:5005"
-    volumes:
-      - /workspace/ml-rasa/data:/app/data
-      - /workspace/ml-rasa/models:/app/models
-      - /workspace/ml-rasa/config.yml:/app/config.yml
-      - /workspace/ml-rasa/domain.yml:/app/domain.yml
-    command: ["run", "--enable-api", "--debug"]
+    user: root  # ✅ Run as root to avoid chown/permission errors
