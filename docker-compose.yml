@@ -5,4 +5,25 @@ services:
     build: .
     ports:
       - "5005:5005"
-    user: root  # ✅ Run as root to avoid chown/permission errors
+    user: root
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./config.yml:/app/config.yml
+      - ./domain.yml:/app/domain.yml
+      - ./credentials.yml:/app/credentials.yml
+      - ./endpoints.yml:/app/endpoints.yml
+    command:
+      - run
+      - --enable-api
+      - --debug
+
+  rasa-shell:
+    build: .
+    user: root
+    volumes:
+      - ./models:/app/models
+      - ./data:/app/data
+      - ./config.yml:/app/config.yml
+      - ./domain.yml:/app/domain.yml
+    entrypoint: ["rasa", "shell"]
