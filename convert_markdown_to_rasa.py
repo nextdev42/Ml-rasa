@@ -25,18 +25,20 @@ stories_data = load_yaml_file(stories_file).get("stories", [])
 domain_data = load_yaml_file(domain_file)
 domain_data.setdefault("version", "3.1")
 domain_data.setdefault("responses", {})
+domain_data.setdefault("intents", [])
 
 # Track existing
 existing_intents = {entry["intent"] for entry in nlu_data}
+existing_domain_intents = set(domain_data["intents"])
 log_entries = []
 
-# Process Markdown
+# Process Markdown files
 for md_file in content_dir.rglob("*.md"):
     post = frontmatter.load(md_file)
 
     title = post.get("title")
     slug = post.get("url")
-    body = post.content.strip().split("\n\n")[0]
+    body = post.content.strip().split("\n\n")[0]  # Only use first paragraph as response
 
     if not (title and slug and body):
         continue
@@ -62,10 +64,13 @@ for md_file in content_dir.rglob("*.md"):
         ]
     })
 
-    # Add domain response
+    # Add to domain
+    if intent not in existing_domain_intents:
+        domain_data["intents"].append(intent)
+        existing_domain_intents.add(intent)
+
     domain_data["responses"][action] = [{"text": body.strip()}]
 
-    # Log it
     log_entries.append(f"✔️ Added intent: {intent} from '{title}'")
 
 # Write outputs
