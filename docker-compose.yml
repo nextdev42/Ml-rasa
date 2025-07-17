@@ -10,8 +10,10 @@ services:
       - .:/app
     command: >
       bash -c "
-        pip install python-frontmatter &&
-        python convert_markdown_to_rasa.py &&
+        if [ -f convert_markdown_to_rasa.py ]; then
+          pip install python-frontmatter &&
+          python convert_markdown_to_rasa.py;
+        fi &&
         rasa run --enable-api --debug
       "
 
@@ -20,9 +22,27 @@ services:
     user: root
     volumes:
       - .:/app
+    stdin_open: true
+    tty: true
     entrypoint: >
       bash -c "
-        pip install python-frontmatter &&
-        python convert_markdown_to_rasa.py &&
+        if [ -f convert_markdown_to_rasa.py ]; then
+          pip install python-frontmatter &&
+          python convert_markdown_to_rasa.py;
+        fi &&
         rasa shell
+      "
+
+  rasa-train:
+    build: .
+    user: root
+    volumes:
+      - .:/app
+    entrypoint: >
+      bash -c "
+        if [ -f convert_markdown_to_rasa.py ]; then
+          pip install python-frontmatter &&
+          python convert_markdown_to_rasa.py;
+        fi &&
+        rasa train
       "
